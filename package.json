@@ -1,0 +1,11 @@
+{
+  "name": "multi-camera-pleno",
+  "version": "1.0.0",
+  "cordova": {
+    "id": "multi-camera-pleno",
+    "platforms": [
+      "android"
+    ]
+  },
+  "description": "Allow to shoot multiplle photos with camera"
+}
