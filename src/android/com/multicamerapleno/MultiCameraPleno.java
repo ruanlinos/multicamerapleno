@@ -31,11 +31,11 @@ public class MultiCameraPleno extends CordovaPlugin {
 
     //Actions names
     private static final String TAKE_PICTURE_ACTION = "takePicture";
-    private static final String GET_PICTURE_ACTION = "getTakePhoto"
+    private static final String GET_PICTURE_ACTION = "getTakePhoto";
 
 
     public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
-        Activity activity = this.cordova.getActivity()
+        Activity activity = this.cordova.getActivity();
         if (action.equals("saludar")) {
             // An example of returning data back to the web layer
             String phrase = args.getString(0);
@@ -61,10 +61,10 @@ public class MultiCameraPleno extends CordovaPlugin {
                     }
                 }
                 final PluginResult result = new PluginResult(PluginResult.Status.OK, eachData);
-                callbackContext.sendPluginResult(result)
+                callbackContext.sendPluginResult(result);
             } else {
                 final PluginResult result = new PluginResult(PluginResult.Status.NO_RESULT , "something goes wrong");
-                callbackContext.sendPluginResult(result)
+                callbackContext.sendPluginResult(result);
                 //Do something when sList is empty
             }
 
@@ -110,7 +110,7 @@ public class MultiCameraPleno extends CordovaPlugin {
                     }
                     cursor.moveToNext();
                 }
-                this.callbackContext.sendPluginResult(photoList)
+                this.callbackContext.sendPluginResult(photoList);
             }
         } catch (Exception e) {
             e.printStackTrace();
