@@ -1,21 +1,23 @@
 /**
  *
  */
-package com.multicamera;
+package com.multicamerapleno;
+
+import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.Intent;
+import android.database.Cursor;
+import android.provider.MediaStore;
 
 import org.apache.cordova.CallbackContext;
-import org.apache.cordova.CordovaInterface;
 import org.apache.cordova.CordovaPlugin;
-import org.apache.cordova.CordovaWebView;
 import org.apache.cordova.PluginResult;
-import org.apache.cordova.PluginResult.Status;
-import org.json.JSONObject;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
-import android.util.Log;
-
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MultiCameraPleno extends CordovaPlugin {
     private static final String TAG = "MultiCameraPleno";
@@ -48,14 +50,14 @@ public class MultiCameraPleno extends CordovaPlugin {
             this.takeOnCamera(activity);
         }
         if (action.equals(GET_PICTURE_ACTION)) {
-            List photos = this.getTakePhoto();
-            if (!(photos.size() ==0)) {
+            List photos = this.getTakePhoto(activity);
+            if (!(photos.size() == 0)) {
                 //Loop index size()
                 JSONObject eachData = new JSONObject();
 
-                for(int index = 0; index < sList.size(); index++) {
+                for (int index = 0; index < photos.size(); index++) {
                     try {
-                        eachData.put(index.toString(), sList.get(index));
+                        eachData.put(Integer.toString(index), photos.get(index));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -63,12 +65,14 @@ public class MultiCameraPleno extends CordovaPlugin {
                 final PluginResult result = new PluginResult(PluginResult.Status.OK, eachData);
                 callbackContext.sendPluginResult(result);
             } else {
-                final PluginResult result = new PluginResult(PluginResult.Status.NO_RESULT , "something goes wrong");
+                final PluginResult result = new PluginResult(PluginResult.Status.NO_RESULT, "something goes wrong");
                 callbackContext.sendPluginResult(result);
                 //Do something when sList is empty
+                return false;
             }
 
         }
+        return true;
     }
 
     public static void takeOnCamera(Activity activity) {
@@ -86,14 +90,14 @@ public class MultiCameraPleno extends CordovaPlugin {
                     intent.setAction(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA_SECURE);
                     activity.startActivityForResult(intent, TAKEONCAMERA);
                 } catch (Exception ell) {
-                    ToastUtils.showToast(activity, "Failed to open camera, please select photo from album");
+//                    ToastUtils.showToast(activity, "Failed to open camera, please select photo from album");
                 }
             }
         }
     }
 
-    public static List<String> getTakePhoto() {
-        ContentResolver resolver = this.cordova.getActivity().getBaseContext().getContentResolver();
+    public static List<String> getTakePhoto(Activity activity) {
+        ContentResolver resolver = activity.getBaseContext().getContentResolver();
 
         Cursor cursor = null;
         try {
@@ -110,7 +114,7 @@ public class MultiCameraPleno extends CordovaPlugin {
                     }
                     cursor.moveToNext();
                 }
-                this.callbackContext.sendPluginResult(photoList);
+                return photoList;
             }
         } catch (Exception e) {
             e.printStackTrace();
