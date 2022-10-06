@@ -20,7 +20,7 @@
       </js-module>
       <config-file target="res/xml/config.xml" parent="/*">
         <feature name="MultiCameraPleno">
-          <param name="android-package" value="com.MultiCameraPleno" />
+          <param name="android-package" value="com.multicamerapleno" />
           <param name="onload" value="true" />
         </feature>
       </config-file>
